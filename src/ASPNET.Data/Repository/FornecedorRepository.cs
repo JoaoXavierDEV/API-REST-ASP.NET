@@ -12,6 +12,11 @@ namespace ASPNET.Data.Repository
         public FornecedorRepository(MeuDbContext context) : base(context)
         {
         }
+        public async Task<List<Fornecedor>> Visualizar()
+        {
+            return await ObterTodos();
+                
+        }
 
         public async Task<Fornecedor> ObterFornecedorEndereco(Guid id)
         {

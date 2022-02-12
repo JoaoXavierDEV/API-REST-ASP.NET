@@ -19,6 +19,10 @@ namespace ASPNET.Business.Services
             _fornecedorRepository = fornecedorRepository;
             _enderecoRepository = enderecoRepository;
         }
+        public async Task<List<Fornecedor>> Visualizar()
+        {
+            return await _fornecedorRepository.ObterTodos();
+        }
 
         public async Task<bool> Adicionar(Fornecedor fornecedor)
         {
