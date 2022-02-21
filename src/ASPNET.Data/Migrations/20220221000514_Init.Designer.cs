@@ -7,19 +7,22 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
+#nullable disable
+
 namespace ASPNET.Data.Migrations
 {
     [DbContext(typeof(MeuDbContext))]
-    [Migration("20200507181203_inicial")]
-    partial class inicial
+    [Migration("20220221000514_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.3")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("ProductVersion", "6.0.2")
+                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
             modelBuilder.Entity("ASPNET.Business.Models.Endereco", b =>
                 {
@@ -51,7 +54,7 @@ namespace ASPNET.Data.Migrations
 
                     b.Property<string>("Logradouro")
                         .IsRequired()
-                        .HasColumnType("varchar(200)");
+                        .HasColumnType("varchar(55)");
 
                     b.Property<string>("Numero")
                         .IsRequired()
@@ -62,7 +65,7 @@ namespace ASPNET.Data.Migrations
                     b.HasIndex("FornecedorId")
                         .IsUnique();
 
-                    b.ToTable("Enderecos");
+                    b.ToTable("Enderecos", (string)null);
                 });
 
             modelBuilder.Entity("ASPNET.Business.Models.Fornecedor", b =>
@@ -87,7 +90,7 @@ namespace ASPNET.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Fornecedores");
+                    b.ToTable("Fornecedores", (string)null);
                 });
 
             modelBuilder.Entity("ASPNET.Business.Models.Produto", b =>
@@ -124,7 +127,7 @@ namespace ASPNET.Data.Migrations
 
                     b.HasIndex("FornecedorId");
 
-                    b.ToTable("Produtos");
+                    b.ToTable("Produtos", (string)null);
                 });
 
             modelBuilder.Entity("ASPNET.Business.Models.Endereco", b =>
@@ -133,6 +136,8 @@ namespace ASPNET.Data.Migrations
                         .WithOne("Endereco")
                         .HasForeignKey("ASPNET.Business.Models.Endereco", "FornecedorId")
                         .IsRequired();
+
+                    b.Navigation("Fornecedor");
                 });
 
             modelBuilder.Entity("ASPNET.Business.Models.Produto", b =>
@@ -141,6 +146,16 @@ namespace ASPNET.Data.Migrations
                         .WithMany("Produtos")
                         .HasForeignKey("FornecedorId")
                         .IsRequired();
+
+                    b.Navigation("Fornecedor");
+                });
+
+            modelBuilder.Entity("ASPNET.Business.Models.Fornecedor", b =>
+                {
+                    b.Navigation("Endereco")
+                        .IsRequired();
+
+                    b.Navigation("Produtos");
                 });
 #pragma warning restore 612, 618
         }

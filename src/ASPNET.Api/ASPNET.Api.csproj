@@ -21,4 +21,8 @@
     <ProjectReference Include="..\ASPNET.Data\ASPNET.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\imagens\" />
+  </ItemGroup>
+
 </Project>

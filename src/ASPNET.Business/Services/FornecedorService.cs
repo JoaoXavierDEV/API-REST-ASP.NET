@@ -67,7 +67,7 @@ namespace ASPNET.Business.Services
                 Notificar("O fornecedor possui produtos cadastrados!");
                 return false;
             }
-
+          
             var endereco = await _enderecoRepository.ObterEnderecoPorFornecedor(id);
 
             if (endereco != null)

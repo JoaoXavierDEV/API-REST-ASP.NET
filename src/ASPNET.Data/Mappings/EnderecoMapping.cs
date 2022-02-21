@@ -11,11 +11,11 @@ namespace ASPNET.Data.Mappings
             builder.HasKey(p => p.Id);
 
             builder.Property(c => c.Logradouro)
-                .IsRequired()
-                .HasColumnType("varchar(200)");
+                .IsRequired(false)
+                .HasColumnType("varchar(55)");
 
             builder.Property(c => c.Numero)
-                .IsRequired()
+                .IsRequired(false)
                 .HasColumnType("varchar(50)");
 
             builder.Property(c => c.Cep)
@@ -23,18 +23,19 @@ namespace ASPNET.Data.Mappings
                 .HasColumnType("varchar(8)");
 
             builder.Property(c => c.Complemento)
+                .IsRequired(false)
                 .HasColumnType("varchar(250)");
 
             builder.Property(c => c.Bairro)
-                .IsRequired()
+                .IsRequired(false)
                 .HasColumnType("varchar(100)");
 
             builder.Property(c => c.Cidade)
-                .IsRequired()
+                .IsRequired(false)
                 .HasColumnType("varchar(100)");
 
             builder.Property(c => c.Estado)
-                .IsRequired()
+                .IsRequired(false)
                 .HasColumnType("varchar(50)");
 
             builder.ToTable("Enderecos");

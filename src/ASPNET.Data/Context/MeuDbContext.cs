@@ -9,7 +9,9 @@ namespace ASPNET.Data.Context
 {
     public class MeuDbContext : DbContext
     {
-        public MeuDbContext(DbContextOptions<MeuDbContext> options) : base(options) { }
+        public MeuDbContext(DbContextOptions<MeuDbContext> options) : base(options) {
+           Database.EnsureCreated();
+        }
 
         public DbSet<Produto> Produtos { get; set; }
         public DbSet<Endereco> Enderecos { get; set; }
@@ -17,10 +19,12 @@ namespace ASPNET.Data.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            
             foreach (var property in modelBuilder.Model.GetEntityTypes()
                 .SelectMany(e => e.GetProperties()
                     .Where(p => p.ClrType == typeof(string))))
                 property.SetColumnType("varchar(100)");
+
 
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(MeuDbContext).Assembly);
 
@@ -43,7 +47,7 @@ namespace ASPNET.Data.Context
                     entry.Property("DataCadastro").IsModified = false;
                 }
             }
-
+            
             return base.SaveChangesAsync(cancellationToken);
         }
     }

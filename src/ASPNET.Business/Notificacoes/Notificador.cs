@@ -25,7 +25,7 @@ namespace ASPNET.Business.Notificacoes
 
         public bool TemNotificacao()
         {
-            return _notificacoes.Any();
+            return _notificacoes.Any<Notificacao>();
         }
     }
 }

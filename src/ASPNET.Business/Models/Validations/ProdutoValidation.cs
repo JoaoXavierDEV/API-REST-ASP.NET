@@ -16,6 +16,7 @@ namespace ASPNET.Business.Models.Validations
 
             RuleFor(c => c.Valor)
                 .GreaterThan(0).WithMessage("O campo {PropertyName} precisa ser maior que {ComparisonValue}");
-        }
+        
+            }
     }
 }

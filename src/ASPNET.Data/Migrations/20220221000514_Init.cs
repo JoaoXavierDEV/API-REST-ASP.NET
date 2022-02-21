@@ -1,21 +1,23 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
+#nullable disable
+
 namespace ASPNET.Data.Migrations
 {
-    public partial class Initial : Migration
+    public partial class Init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
-        {
+        {/*
             migrationBuilder.CreateTable(
                 name: "Fornecedores",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Nome = table.Column<string>(type: "varchar(200)", nullable: false),
                     Documento = table.Column<string>(type: "varchar(14)", nullable: false),
-                    TipoFornecedor = table.Column<int>(nullable: false),
-                    Ativo = table.Column<bool>(nullable: false)
+                    TipoFornecedor = table.Column<int>(type: "int", nullable: false),
+                    Ativo = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -26,9 +28,9 @@ namespace ASPNET.Data.Migrations
                 name: "Enderecos",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
-                    FornecedorId = table.Column<Guid>(nullable: false),
-                    Logradouro = table.Column<string>(type: "varchar(200)", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    FornecedorId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Logradouro = table.Column<string>(type: "varchar(55)", nullable: false),
                     Numero = table.Column<string>(type: "varchar(50)", nullable: false),
                     Complemento = table.Column<string>(type: "varchar(250)", nullable: true),
                     Cep = table.Column<string>(type: "varchar(8)", nullable: false),
@@ -43,22 +45,21 @@ namespace ASPNET.Data.Migrations
                         name: "FK_Enderecos_Fornecedores_FornecedorId",
                         column: x => x.FornecedorId,
                         principalTable: "Fornecedores",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
                 name: "Produtos",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
-                    FornecedorId = table.Column<Guid>(nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    FornecedorId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Nome = table.Column<string>(type: "varchar(200)", nullable: false),
                     Descricao = table.Column<string>(type: "varchar(1000)", nullable: false),
                     Imagem = table.Column<string>(type: "varchar(100)", nullable: false),
-                    Valor = table.Column<decimal>(nullable: false),
-                    DataCadastro = table.Column<DateTime>(nullable: false),
-                    Ativo = table.Column<bool>(nullable: false)
+                    Valor = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    DataCadastro = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Ativo = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -67,8 +68,7 @@ namespace ASPNET.Data.Migrations
                         name: "FK_Produtos_Fornecedores_FornecedorId",
                         column: x => x.FornecedorId,
                         principalTable: "Fornecedores",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
@@ -80,11 +80,11 @@ namespace ASPNET.Data.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Produtos_FornecedorId",
                 table: "Produtos",
-                column: "FornecedorId");
+                column: "FornecedorId");*/
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
-        {
+        {/*
             migrationBuilder.DropTable(
                 name: "Enderecos");
 
@@ -92,7 +92,7 @@ namespace ASPNET.Data.Migrations
                 name: "Produtos");
 
             migrationBuilder.DropTable(
-                name: "Fornecedores");
+                name: "Fornecedores");*/
         }
     }
 }
