@@ -32,7 +32,7 @@ namespace ASPNET.Api.ViewModels
         public bool Ativo { get; set; }
 
         //remover posteriormente para teste
-        [ScaffoldColumn(false)]
+        // [ScaffoldColumn(false)]
         public string NomeFornecedor { get; set; }
     }
 }

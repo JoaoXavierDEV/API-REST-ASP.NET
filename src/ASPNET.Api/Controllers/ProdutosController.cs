@@ -40,9 +40,10 @@ namespace ASPNET.Api.Controllers
         [HttpPost]
         public async Task<ActionResult<ProdutoViewModel>> Adicionar(ProdutoViewModel produtoViewModel)
         {
+            
             if(!ModelState.IsValid) return CustomResponse(ModelState);
             var imagemNome = Guid.NewGuid() + "_" + produtoViewModel.Imagem;
-            if (!UploadArquivo(produtoViewModel.Imagem,imagemNome))
+            if (!UploadArquivo(produtoViewModel.ImagemUpload,imagemNome))
             {
                 return CustomResponse();
             }
@@ -63,7 +64,7 @@ namespace ASPNET.Api.Controllers
 
         private bool UploadArquivo(string arquivo, string imgNome)
         {
-            var imageDataByteArray = Convert.FromBase64String(arquivo);
+            ArgumentNullException.ThrowIfNull(arquivo);
             if (string.IsNullOrEmpty(arquivo))
             {
                 // ModelState.AddModelError(string.Empty, "Forneça uma imagem para este produto");
@@ -71,9 +72,10 @@ namespace ASPNET.Api.Controllers
                 return false;
             }
 
-            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwroot/imagens", imgNome);
+            var imageDataByteArray = Convert.FromBase64String(arquivo);
+            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/imagens", imgNome);
 
-            if ( System.IO.File.Exists(filePath))
+            if ( System.IO.File.Exists(filePath) )
             {
                 // ModelState.AddModelError(String.Empty, "Já existe um caminho com este nome");
                 NotificarErro("Já existe um caminho com este nome");
