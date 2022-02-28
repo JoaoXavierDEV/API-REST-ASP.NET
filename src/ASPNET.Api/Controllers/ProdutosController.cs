@@ -1,4 +1,5 @@
-﻿using ASPNET.Api.ViewModels;
+﻿using ASPNET.Api.Extensions;
+using ASPNET.Api.ViewModels;
 using ASPNET.Business.Intefaces;
 using ASPNET.Business.Models;
 using AutoMapper;
@@ -51,6 +52,20 @@ namespace ASPNET.Api.Controllers
             await _produtoService.Adicionar(_mapper.Map<Produto>(produtoViewModel));
             return CustomResponse(produtoViewModel);
         }
+        [HttpPost("Adicionar")]
+        public async Task<ActionResult<ProdutoViewModel>> AdicionarAlternativo(
+            [ModelBinder(BinderType = typeof(JsonWithFilesFormDataModelBinder))]  ProdutoImagemViewModel produtoViewModel)
+        {
+            if (!ModelState.IsValid) return CustomResponse(ModelState);
+            var imgPrefixo = Guid.NewGuid() + "_" ;
+            if (! await UploadArquivoAlternativo(produtoViewModel.ImagemUpload, imgPrefixo))
+            {
+                return CustomResponse(ModelState);
+            }
+            produtoViewModel.Imagem = imgPrefixo + produtoViewModel.ImagemUpload.FileName;
+            await _produtoService.Adicionar(_mapper.Map<Produto>(produtoViewModel));
+            return CustomResponse(produtoViewModel);
+        }
 
         [HttpDelete("{id:guid}")]
         public async Task<ActionResult<ProdutoViewModel>> Excluir(Guid id)
@@ -73,7 +88,7 @@ namespace ASPNET.Api.Controllers
             }
 
             var imageDataByteArray = Convert.FromBase64String(arquivo);
-            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/imagens", imgNome);
+            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", imgNome);
 
             if ( System.IO.File.Exists(filePath) )
             {
@@ -82,6 +97,31 @@ namespace ASPNET.Api.Controllers
                 return false;
             }
             System.IO.File.WriteAllBytes(filePath, imageDataByteArray);
+            return true;
+        }
+        
+        private async Task<bool> UploadArquivoAlternativo(IFormFile arquivo, string imgPrefixo)
+        {
+            // ArgumentNullException.ThrowIfNull(arquivo);
+            if (arquivo == null || arquivo.Length == 0)
+            {
+                // ModelState.AddModelError(string.Empty, "Forneça uma imagem para este produto");
+                NotificarErro("NOTIFICAERRO - Forneça uma imagem para este produto");
+                return false;
+            }
+
+            var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", imgPrefixo + arquivo.FileName);
+
+            if (System.IO.File.Exists(path))
+            {
+                NotificarErro("Já existe um caminho com este nome");
+                return false;
+            }
+            using (var stream = new FileStream(path, FileMode.Create))
+            {
+                await arquivo.CopyToAsync(stream);
+            }
+
             return true;
         }
 
