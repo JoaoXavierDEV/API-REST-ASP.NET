@@ -2,10 +2,12 @@
 using ASPNET.Business.Intefaces;
 using ASPNET.Business.Models;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ASPNET.Api.Controllers
 {
+    [Authorize]
     [Route("api/fornecedores")]
     public class FornecedorController : MainController
     {
@@ -25,6 +27,7 @@ namespace ASPNET.Api.Controllers
             _mapper = mapper;
             _fornecedorService = fornecedorService;
         }
+        [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<FornecedorViewModel>>> ObterTodos()
         {
@@ -33,6 +36,7 @@ namespace ASPNET.Api.Controllers
             //var fornecedor = _mapper.Map<IEnumerable<FornecedorViewModel>>(await _fornecedorService.Visualizar());
             return Ok(fornecedor);
         }
+        [AllowAnonymous]
         [HttpGet("{id:guid}")]
         public async Task<ActionResult<FornecedorViewModel>> ObterPorID(Guid id)
         {
