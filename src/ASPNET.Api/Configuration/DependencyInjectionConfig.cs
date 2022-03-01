@@ -1,4 +1,5 @@
-﻿using ASPNET.Business.Intefaces;
+﻿using ASPNET.Api.Data;
+using ASPNET.Business.Intefaces;
 using ASPNET.Business.Notificacoes;
 using ASPNET.Business.Services;
 using ASPNET.Data.Context;
@@ -13,6 +14,7 @@ namespace ASPNET.Api.Configuration
         public static IServiceCollection ResolveDependencies(this IServiceCollection services)
         {
             services.AddScoped<MeuDbContext>();
+            // services.AddScoped<ApplicationDbContext>();
             services.AddScoped<IFornecedorRepository, FornecedorRepository>();
             services.AddScoped<IEnderecoRepository, EnderecoRepository>();
             services.AddScoped<IProdutoRepository, ProdutoRepository>();
