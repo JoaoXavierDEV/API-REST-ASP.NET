@@ -20,7 +20,8 @@ namespace ASPNET.Api.Configuration
                 });
             services.AddCors(op => {
                 op.AddPolicy("Development",
-                    builder => builder.AllowAnyOrigin()
+                    builder => builder
+                    .AllowAnyOrigin()
                     .AllowAnyMethod()
                     .AllowAnyHeader()
                     //.AllowCredentials()
@@ -28,11 +29,11 @@ namespace ASPNET.Api.Configuration
             });
             return services;
         }
-        public static IApplicationBuilder UseMVCConfiguration(this IApplicationBuilder app, IConfiguration config,IWebHostEnvironment env) {
+        public static IApplicationBuilder UseMVCConfiguration(this IApplicationBuilder app, IWebHostEnvironment env) {
             app.UseCors("Development");
             app.UseHttpsRedirection();
             app.UseAuthorization();
-            // app.MapControllers();
+
 
             return app;
         }

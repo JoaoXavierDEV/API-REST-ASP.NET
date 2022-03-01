@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ASPNET.Business", "src\ASPN
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ASPNET.Data", "src\ASPNET.Data\ASPNET.Data.csproj", "{EFFAD045-5C8D-4590-806E-075862063C04}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ASPNET.Api", "src\ASPNET.Api\ASPNET.Api.csproj", "{0C8A2C37-6310-40FE-AE81-5444E680E3D9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ASPNET.Api", "src\ASPNET.Api\ASPNET.Api.csproj", "{0C8A2C37-6310-40FE-AE81-5444E680E3D9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
