@@ -14,8 +14,6 @@ builder.Services.AddDbContext<MeuDbContext>(options =>
 });
 builder.Services.AddIdentityConfiguration(builder.Configuration);
 builder.Services.ResolveDependencies();
-
-
 var app = builder.Build();
 
 IConfiguration configuration = app.Configuration;
@@ -27,9 +25,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 app.UseAuthentication();
-
-
-
 app.UseMVCConfiguration(environment);
 app.MapControllers();
 

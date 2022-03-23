@@ -9,9 +9,21 @@ namespace ASPNET.Api.Controllers
     public abstract class MainController : ControllerBase
     {
         private readonly INotificador _notificador;
-        public MainController(INotificador notificador)
+        public readonly IUser AppUser;
+
+        protected bool UsuarioAutenticado { get; set; }
+        public Guid UsuarioId { get; set; }
+
+        protected MainController(INotificador notificador, IUser appUser)
         {
             _notificador = notificador;
+            AppUser = appUser;
+
+            if (appUser.IsAuthenticated())
+            {
+                UsuarioId = appUser.GetUserId();
+                UsuarioAutenticado = true;
+            }
         }
 
         protected bool OperacaoValida()

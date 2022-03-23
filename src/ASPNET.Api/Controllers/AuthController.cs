@@ -5,9 +5,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
-using static ASPNET.Api.ViewModels.UserViewModel;
+using ASPNET.Api.ViewModels;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
+
 
 namespace ASPNET.Api.Controllers
 {
@@ -21,7 +22,8 @@ namespace ASPNET.Api.Controllers
         public AuthController(SignInManager<IdentityUser> signInManager,
             UserManager<IdentityUser> userManager,
             IOptions<AppSettings> appSettings,
-            INotificador notificador) : base(notificador)
+            INotificador notificador,
+            IUser user) : base(notificador, user)
         {
             _signInManager = signInManager;
             _userManager = userManager;
@@ -71,7 +73,7 @@ namespace ASPNET.Api.Controllers
             NotificarErro("Usuário ou senha incorretos");
             return CustomResponse(loginUser);
         }
-        private async Task<string> GerarJwt(string email)
+        private async Task<LoginResponseViewModel> GerarJwt(string email)
         {
             var user = await _userManager.FindByEmailAsync(email);
             var claims = await _userManager.GetClaimsAsync(user);
@@ -103,11 +105,22 @@ namespace ASPNET.Api.Controllers
             });
 
             var encodedToken = tokenHandler.WriteToken(token);
-            return encodedToken;
+            var response = new LoginResponseViewModel()
+            {
+                AccessToken = encodedToken,
+                ExpiresIn = TimeSpan.FromHours(_appSettings.ExpiracaoHoras).TotalSeconds,
+                UserToken = new UserTokenViewModel
+                {
+                    Id = user.Id,
+                    Email = user.Email,
+                    Claims = claims.Select(x => new ClaimViewModel { Type = x.Type, Value = x.Value })
+                }
+            };
+            return response;
         }
-        private static long ToUnixEpochDate(DateTime date) 
+        private static long ToUnixEpochDate(DateTime date)
              => (long)Math.Round((date.ToUniversalTime() - new DateTimeOffset(1970, 1, 1, 0, 0, 0, TimeSpan.Zero)).TotalSeconds);
-        
+
     }
 
 }

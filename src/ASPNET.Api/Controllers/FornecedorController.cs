@@ -21,7 +21,8 @@ namespace ASPNET.Api.Controllers
                                     IEnderecoRepository enderecoRepository,
                                     IMapper mapper,
                                     IFornecedorService fornecedorService,
-                                    INotificador notificador) : base(notificador)
+                                    INotificador notificador,
+                                    IUser user) : base(notificador, user)
         {
             _fornecedorRepository = fornecedorRepository;
             _enderecoRepository = enderecoRepository;

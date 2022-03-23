@@ -24,8 +24,8 @@ namespace ASPNET.Api.Configuration
             services.AddScoped<IProdutoService, ProdutoService>();
             
 
-            // services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            // services.AddScoped<IUser, AspNetUser>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddScoped<IUser, AspNetUser>();
           
             return services;
         }

@@ -30,10 +30,20 @@ namespace ASPNET.Api.Configuration
             return services;
         }
         public static IApplicationBuilder UseMVCConfiguration(this IApplicationBuilder app, IWebHostEnvironment env) {
-            app.UseCors("Development");
             app.UseHttpsRedirection();
+            app.UseCors("Development");
             app.UseAuthorization();
 
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                // app.UseExceptionHandler();
+                app.UseHsts();
+            }
+            
 
             return app;
         }

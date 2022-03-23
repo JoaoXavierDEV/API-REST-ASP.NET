@@ -18,7 +18,8 @@ namespace ASPNET.Api.Controllers
         public ProdutosController(IProdutoRepository produtoRepository,
                                     IProdutoService produtoService,
                                     IMapper mapper,
-                                    INotificador notificador) : base(notificador)
+                                    INotificador notificador,
+                                    IUser user) : base(notificador, user)
         {
             _produtoRepository = produtoRepository;
             _produtoService = produtoService;
