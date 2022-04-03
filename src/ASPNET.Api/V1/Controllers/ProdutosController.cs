@@ -1,14 +1,16 @@
-﻿using ASPNET.Api.Extensions;
+﻿using ASPNET.Api.Controllers;
+using ASPNET.Api.Extensions;
 using ASPNET.Api.ViewModels;
 using ASPNET.Business.Intefaces;
 using ASPNET.Business.Models;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ASPNET.Api.Controllers
+namespace ASPNET.Api.V1.Controllers
 {
-    [Route("api/produtos")]
-    
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/produtos")]
+
     public class ProdutosController : MainController
     {
         private readonly IProdutoRepository _produtoRepository;
@@ -36,16 +38,16 @@ namespace ASPNET.Api.Controllers
         public async Task<ActionResult<ProdutoViewModel>> ObterPorId(Guid id)
         {
             var produto = await ObterProdutos(id);
-            if(produto == null) return NotFound();
+            if (produto == null) return NotFound();
             return Ok(produto);
         }
         [HttpPost]
         public async Task<ActionResult<ProdutoViewModel>> Adicionar(ProdutoViewModel produtoViewModel)
         {
-            
-            if(!ModelState.IsValid) return CustomResponse(ModelState);
+
+            if (!ModelState.IsValid) return CustomResponse(ModelState);
             var imagemNome = Guid.NewGuid() + "_" + produtoViewModel.Imagem;
-            if (!UploadArquivo(produtoViewModel.ImagemUpload,imagemNome))
+            if (!UploadArquivo(produtoViewModel.ImagemUpload, imagemNome))
             {
                 return CustomResponse();
             }
@@ -55,11 +57,11 @@ namespace ASPNET.Api.Controllers
         }
         [HttpPost("Adicionar")]
         public async Task<ActionResult<ProdutoViewModel>> AdicionarAlternativo(
-            [ModelBinder(BinderType = typeof(JsonWithFilesFormDataModelBinder))]  ProdutoImagemViewModel produtoViewModel)
+            [ModelBinder(BinderType = typeof(JsonWithFilesFormDataModelBinder))] ProdutoImagemViewModel produtoViewModel)
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
-            var imgPrefixo = Guid.NewGuid() + "_" ;
-            if (! await UploadArquivoAlternativo(produtoViewModel.ImagemUpload, imgPrefixo))
+            var imgPrefixo = Guid.NewGuid() + "_";
+            if (!await UploadArquivoAlternativo(produtoViewModel.ImagemUpload, imgPrefixo))
             {
                 return CustomResponse(ModelState);
             }
@@ -128,7 +130,7 @@ namespace ASPNET.Api.Controllers
             var imageDataByteArray = Convert.FromBase64String(arquivo);
             var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", imgNome);
 
-            if ( System.IO.File.Exists(filePath) )
+            if (System.IO.File.Exists(filePath))
             {
                 // ModelState.AddModelError(String.Empty, "Já existe um caminho com este nome");
                 NotificarErro("Já existe um caminho com este nome");
@@ -137,7 +139,7 @@ namespace ASPNET.Api.Controllers
             System.IO.File.WriteAllBytes(filePath, imageDataByteArray);
             return true;
         }
-        
+
         private async Task<bool> UploadArquivoAlternativo(IFormFile arquivo, string imgPrefixo)
         {
             // ArgumentNullException.ThrowIfNull(arquivo);

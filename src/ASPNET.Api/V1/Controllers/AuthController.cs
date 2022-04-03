@@ -8,11 +8,12 @@ using System.Text;
 using ASPNET.Api.ViewModels;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
+using ASPNET.Api.Controllers;
 
-
-namespace ASPNET.Api.Controllers
+namespace ASPNET.Api.V1.Controllers
 {
-    [Route("api/account")]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}")]
     public class AuthController : MainController
     {
         private readonly SignInManager<IdentityUser> _signInManager;

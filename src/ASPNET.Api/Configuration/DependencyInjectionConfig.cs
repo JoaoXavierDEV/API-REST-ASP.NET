@@ -5,6 +5,8 @@ using ASPNET.Business.Services;
 using ASPNET.Data.Context;
 using ASPNET.Data.Repository;
 using DevIO.Api.Extensions;
+using Microsoft.Extensions.Options;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace ASPNET.Api.Configuration
 {
@@ -22,8 +24,8 @@ namespace ASPNET.Api.Configuration
             services.AddScoped<INotificador, Notificador>();
             services.AddScoped<IFornecedorService, FornecedorService>();
             services.AddScoped<IProdutoService, ProdutoService>();
-            
 
+            services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<IUser, AspNetUser>();
           

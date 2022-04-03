@@ -30,10 +30,10 @@ namespace ASPNET.Api.Controllers
         {
             return !_notificador.TemNotificacao();
         }
-        
+
         protected ActionResult CustomResponse(object? result = null)
         {
-            if(OperacaoValida())
+            if (OperacaoValida())
             {
                 return Ok(new
                 {
@@ -51,7 +51,7 @@ namespace ASPNET.Api.Controllers
         protected ActionResult CustomResponse(ModelStateDictionary modelState)
         {
             if (!modelState.IsValid) NotificarErroModelInvalida(modelState);
-            return CustomResponse();  
+            return CustomResponse();
         }
         protected void NotificarErroModelInvalida(ModelStateDictionary modelState)
         {
@@ -66,5 +66,5 @@ namespace ASPNET.Api.Controllers
         {
             _notificador.Handle(new Notificacao(mensagem));
         }
-    } 
+    }
 }

@@ -1,4 +1,5 @@
-﻿using ASPNET.Api.Extensions;
+﻿using ASPNET.Api.Controllers;
+using ASPNET.Api.Extensions;
 using ASPNET.Api.ViewModels;
 using ASPNET.Business.Intefaces;
 using ASPNET.Business.Models;
@@ -6,10 +7,11 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ASPNET.Api.Controllers
+namespace ASPNET.Api.V1.Controllers
 {
     [Authorize]
-    [Route("api/fornecedores")]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/fornecedores")]
     public class FornecedorController : MainController
     {
         private readonly IFornecedorRepository _fornecedorRepository;
@@ -42,11 +44,12 @@ namespace ASPNET.Api.Controllers
         [HttpGet("{id:guid}")]
         public async Task<ActionResult<FornecedorViewModel>> ObterPorID(Guid id)
         {
+            ArgumentNullException.ThrowIfNull(id); // remover dps
             var fornecedor = await ObterFornecedorProdutosPorEndereco(id);
             if (fornecedor == null) return NotFound();
             return Ok(fornecedor);
         }
-        [ClaimsAuthorize("Fornecedor","Adicionar")]
+        [ClaimsAuthorize("Fornecedor", "Adicionar")]
         [HttpPost]
         public async Task<ActionResult<FornecedorViewModel>> Adicionar(FornecedorViewModel fornecedorViewModel)
         {
@@ -81,7 +84,7 @@ namespace ASPNET.Api.Controllers
 
             if (fornecedorViewModel == null) return NotFound();
 
-            await _fornecedorService.Remover(id); 
+            await _fornecedorService.Remover(id);
 
             return CustomResponse();
         }
