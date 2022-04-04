@@ -19,15 +19,18 @@ namespace ASPNET.Api.V1.Controllers
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly AppSettings _appSettings;
+        private readonly ILogger<AuthController> _logger;
 
         public AuthController(SignInManager<IdentityUser> signInManager,
-            UserManager<IdentityUser> userManager,
-            IOptions<AppSettings> appSettings,
-            INotificador notificador,
-            IUser user) : base(notificador, user)
+                              UserManager<IdentityUser> userManager,
+                              IOptions<AppSettings> appSettings,
+                              INotificador notificador,
+                              ILogger<AuthController> logger,
+                              IUser user) : base(notificador, user)
         {
             _signInManager = signInManager;
             _userManager = userManager;
+            _logger = logger;
             _appSettings = appSettings.Value;
         }
         [HttpPost("nova-conta")]
@@ -63,6 +66,7 @@ namespace ASPNET.Api.V1.Controllers
             var result = await _signInManager.PasswordSignInAsync(loginUser.Email, loginUser.Password, false, true);
             if (result.Succeeded)
             {
+                _logger.LogInformation("Usuário " + loginUser.Email + " Logado com sucesso");
                 return CustomResponse(await GerarJwt(loginUser.Email));
             }
             if (result.IsLockedOut)

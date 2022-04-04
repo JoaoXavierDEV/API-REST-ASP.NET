@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ASPNET.Api.V1.Controllers
 {
-    [Authorize]
+    // [Authorize]
     [ApiVersion("1.0")]
     [Route("api/v{version:apiVersion}/fornecedores")]
     public class FornecedorController : MainController
@@ -40,14 +40,23 @@ namespace ASPNET.Api.V1.Controllers
             //var fornecedor = _mapper.Map<IEnumerable<FornecedorViewModel>>(await _fornecedorService.Visualizar());
             return Ok(fornecedor);
         }
-
+        [AllowAnonymous]
         [HttpGet("{id:guid}")]
         public async Task<ActionResult<FornecedorViewModel>> ObterPorID(Guid id)
         {
-            ArgumentNullException.ThrowIfNull(id); // remover dps
             var fornecedor = await ObterFornecedorProdutosPorEndereco(id);
             if (fornecedor == null) return NotFound();
             return Ok(fornecedor);
+        }
+        [AllowAnonymous]
+        [HttpGet("testesID/{id:guid}")]
+        public async Task<FornecedorViewModel> ObterPorID2(Guid id)
+        {
+            // Para testes
+            // ArgumentNullException.ThrowIfNull(id); // remover dps
+            var fornecedor = await ObterFornecedorProdutosPorEndereco(id);
+            //if (fornecedor == null) return CustomResponse();
+            return fornecedor;
         }
         [ClaimsAuthorize("Fornecedor", "Adicionar")]
         [HttpPost]

@@ -14,46 +14,46 @@ namespace ASPNET.Api.Configuration
         public static IServiceCollection AddWebApiConfig(this IServiceCollection services)
         {
             services.AddControllers();
-            services.Configure<ApiBehaviorOptions>(
-                op =>
-                {
-                    op.SuppressModelStateInvalidFilter = true;
-                });
             services.AddApiVersioning(op => 
             {
                 op.AssumeDefaultVersionWhenUnspecified = true;
-                op.DefaultApiVersion = new ApiVersion(2, 0);
+                op.DefaultApiVersion = new ApiVersion(1, 0);
                 op.ReportApiVersions = true;
             });
             services.AddVersionedApiExplorer(op => {
                 op.GroupNameFormat = "'v'VVV";
                 op.SubstituteApiVersionInUrl = true;
             });
-            services.AddCors(op => {
-                op.AddPolicy("Development",
-                    builder => builder
-                    .AllowAnyOrigin()
-                    .AllowAnyMethod()
-                    .AllowAnyHeader()
-                    //.AllowCredentials()
-                    );
+
+            services.Configure<ApiBehaviorOptions>(
+                op =>
+                {
+                    op.SuppressModelStateInvalidFilter = true;
+                });
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("Development",
+                    builder =>
+                        builder
+                        .AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader());
+
+
+                options.AddPolicy("Production",
+                    builder =>
+                        builder
+                            .WithMethods("GET")
+                            .WithOrigins("http://desenvolvedor.io")
+                            .SetIsOriginAllowedToAllowWildcardSubdomains()
+                            //.WithHeaders(HeaderNames.ContentType, "x-custom-header")
+                            .AllowAnyHeader());
             });
 
-            services.AddCors(op => {
-                op.AddPolicy("Production",
-                    builder => builder
-                    .WithMethods("GET")
-                    .WithOrigins("https://localhost")
-                    .SetIsOriginAllowedToAllowWildcardSubdomains()
-                    // .WithHeaders(HeaderNames.ContentType, "x-custom-header")
-                    .AllowAnyHeader()
-                    
-                    ); ;
-            });
             return services;
         }
         public static IApplicationBuilder UseApiConfig(this IApplicationBuilder app, IWebHostEnvironment env) {
-            app.UseHttpsRedirection();
 
             if (env.IsDevelopment())
             {
@@ -75,7 +75,11 @@ namespace ASPNET.Api.Configuration
             app.UseAuthorization();
 
             app.UseStaticFiles();
-            return app;
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
+                return app;
         }
     }
 }

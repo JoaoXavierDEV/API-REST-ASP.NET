@@ -9,7 +9,7 @@ namespace ASPNET.Api.Configuration
 {
     public static class SwaggerConfig
     {
-        public static IServiceCollection AddSwaggerConfig(this IServiceCollection services)
+       public static IServiceCollection AddSwaggerConfig(this IServiceCollection services)
         {
             services.AddSwaggerGen(c =>
             {
@@ -46,7 +46,7 @@ namespace ASPNET.Api.Configuration
 
         public static IApplicationBuilder UseSwaggerConfig(this IApplicationBuilder app, IApiVersionDescriptionProvider provider)
         {
-            //app.UseMiddleware<SwaggerAuthorizedMiddleware>();
+            // app.UseMiddleware<SwaggerAuthorizedMiddleware>();
             app.UseSwagger();
             app.UseSwaggerUI(
                 options =>
@@ -82,7 +82,8 @@ namespace ASPNET.Api.Configuration
                 Version = description.ApiVersion.ToString(),
                 Description = "Esta API faz parte do curso REST com ASP.NET Core WebAPI.",
                 Contact = new OpenApiContact() { Name = "Eduardo Pires", Email = "contato@desenvolvedor.io" },
-                License = new OpenApiLicense() { Name = "MIT", Url = new Uri("https://opensource.org/licenses/MIT") }
+                License = new OpenApiLicense() { Name = "MIT", Url = new Uri("https://opensource.org/licenses/MIT") },
+                TermsOfService =  new Uri("https://opensource.org/licenses/MIT")
             };
 
             if (description.IsDeprecated)
@@ -147,6 +148,10 @@ namespace ASPNET.Api.Configuration
                 && !context.User.Identity.IsAuthenticated)
             {
                 context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+
+                // context.Response.Redirect("www.google.com"); 
+                // adicionar redirecionamento para login
+                // app.UseMiddleware linha #59
                 return;
             }
 
