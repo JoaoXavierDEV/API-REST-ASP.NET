@@ -1,5 +1,6 @@
 ﻿using ASPNET.Api.Controllers;
 using ASPNET.Business.Intefaces;
+using Elmah.Io.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ASPNET.Api.V2.Controllers
@@ -28,6 +29,7 @@ namespace ASPNET.Api.V2.Controllers
             //{
             //    e.Ship(HttpContext);
             //}
+
 
             // para desenvolvimento
             _logger.LogTrace("Log de Trace");

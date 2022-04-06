@@ -1,4 +1,5 @@
 ﻿using ASPNET.Api.Data;
+using ASPNET.Api.Extensions;
 using ASPNET.Business.Intefaces;
 using ASPNET.Business.Notificacoes;
 using ASPNET.Business.Services;
@@ -28,7 +29,7 @@ namespace ASPNET.Api.Configuration
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<IUser, AspNetUser>();
             services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
-          
+
             return services;
         }
     }

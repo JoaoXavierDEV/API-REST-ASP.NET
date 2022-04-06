@@ -11,6 +11,8 @@ builder.Configuration
     .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", true, true)
     .AddEnvironmentVariables();
 
+
+
 builder.Services.AddDbContext<MeuDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
@@ -18,7 +20,8 @@ builder.Services.AddDbContext<MeuDbContext>(options =>
 builder.Services.AddIdentityConfiguration(builder.Configuration);
 // builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-builder.Services.AddWebApiConfig();
+builder.Services.AddWebApiConfig(builder.Configuration);
+builder.Services.AddLoggingConfig(builder.Configuration);
 builder.Services.AddSwaggerConfig();
 builder.Services.ResolveDependencies();
 var app = builder.Build();
@@ -26,9 +29,7 @@ var app = builder.Build();
 IConfiguration configuration = app.Configuration;
 IWebHostEnvironment environment = app.Environment;
 var apiVersionDescriptionProvider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
-
-
-
+app.UseLoggingConfig();
 app.UseApiConfig(app.Environment);
 
 app.UseSwaggerConfig(apiVersionDescriptionProvider);

@@ -6,21 +6,27 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Net.Http.Headers;
+using ASPNET.Api.Configuration;
+using ASPNET.Data.Context;
+using HealthChecks.SqlServer;
+using HealthChecks.UI;
+using HealthChecks.UI.Client;
 
 namespace ASPNET.Api.Configuration
 {
     public static class ApiConfig
     {
-        public static IServiceCollection AddWebApiConfig(this IServiceCollection services)
+        public static IServiceCollection AddWebApiConfig(this IServiceCollection services, IConfiguration config)
         {
             services.AddControllers();
-            services.AddApiVersioning(op => 
+            services.AddApiVersioning(op =>
             {
                 op.AssumeDefaultVersionWhenUnspecified = true;
                 op.DefaultApiVersion = new ApiVersion(1, 0);
                 op.ReportApiVersions = true;
             });
-            services.AddVersionedApiExplorer(op => {
+            services.AddVersionedApiExplorer(op =>
+            {
                 op.GroupNameFormat = "'v'VVV";
                 op.SubstituteApiVersionInUrl = true;
             });
@@ -30,7 +36,7 @@ namespace ASPNET.Api.Configuration
                 {
                     op.SuppressModelStateInvalidFilter = true;
                 });
-
+            
             services.AddCors(options =>
             {
                 options.AddPolicy("Development",
@@ -50,10 +56,10 @@ namespace ASPNET.Api.Configuration
                             //.WithHeaders(HeaderNames.ContentType, "x-custom-header")
                             .AllowAnyHeader());
             });
-
             return services;
         }
-        public static IApplicationBuilder UseApiConfig(this IApplicationBuilder app, IWebHostEnvironment env) {
+        public static IApplicationBuilder UseApiConfig(this IApplicationBuilder app, IWebHostEnvironment env)
+        {
 
             if (env.IsDevelopment())
             {
@@ -65,7 +71,7 @@ namespace ASPNET.Api.Configuration
                 app.UseCors("Production");
                 app.UseHsts();
             }
-            // app.UseMiddleware<ExceptionMiddleware>();
+            app.UseMiddleware<ExceptionMiddleware>();
 
             app.UseHttpsRedirection();
 
@@ -75,11 +81,27 @@ namespace ASPNET.Api.Configuration
             app.UseAuthorization();
 
             app.UseStaticFiles();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHealthChecksUI(options =>
+                {
+                    options.UIPath = "/api/hc-ui";
+                    options.ResourcesPath = "/api/hc-ui-resources";
+
+                    options.UseRelativeApiPath = false;
+                    options.UseRelativeResourcesPath = false;
+                    options.UseRelativeWebhookPath = false;
+                });
+                endpoints.MapHealthChecks("/api/hc", new HealthCheckOptions()
+                {
+                    Predicate = _ => true,
+                    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+                });
+
             });
-                return app;
+            return app;
         }
     }
 }

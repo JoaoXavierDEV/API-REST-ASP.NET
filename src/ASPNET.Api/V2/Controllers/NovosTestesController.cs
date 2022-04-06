@@ -11,11 +11,12 @@ namespace ASPNET.Api.V2.Controllers
         public NovosTesteController(INotificador notificador, IUser appUser) : base(notificador, appUser)
         {
         }
-
+         
         [HttpGet]
         public string VersaoApi()
         {
-            return "Disponível apenas na Versão v2\nDefault " + ApiVersion.Default  + "\nNeutral: " +ApiVersion.Neutral;
+            throw new Exception("We're done when I say we're done");
+            // return "Disponível apenas na Versão v2\nDefault " + ApiVersion.Default  + "\nNeutral: " +ApiVersion.Neutral;
         }
     }
 }

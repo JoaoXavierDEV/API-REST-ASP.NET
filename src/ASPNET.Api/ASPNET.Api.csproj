@@ -7,12 +7,28 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AspNetcore.HealthChecks.Publisher.ApplicationInsights" Version="6.0.2" />
+    <PackageReference Include="aspnetcore.healthchecks.ui" Version="6.0.4" />
+    <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="6.0.4" />
+    <PackageReference Include="aspnetcore.healthchecks.ui.sqlserver.storage" Version="6.0.4" />
+    <PackageReference Include="aspnetcore.healthchecks.sqlserver" Version="6.0.2" />
+    <PackageReference Include="Elmah.Io.Client" Version="4.1.36" />
+    <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="6.0.3" />
+    
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
+    
+    
+    <PackageReference Include="Elmah.Io.AspNetCore" Version="4.1.37" />
+    <PackageReference Include="elmah.io.aspnetcore.healthchecks" Version="4.1.37" />
+    <PackageReference Include="elmah.io.extensions.logging" Version="4.1.28" />
+    
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.3" />
+    
     <PackageReference Include="Microsoft.AspNetcore.Mvc.Versioning" Version="5.0.0" />
     <PackageReference Include="Microsoft.AspNetcore.Mvc.Versioning.apiexplorer" Version="5.0.0" />
+    
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.3">
       <PrivateAssets>all</PrivateAssets>
