@@ -23,7 +23,7 @@ namespace ASPNET.Api.Extensions
                     var command = connection.CreateCommand();
                     command.CommandText = "select count(id) from produtos";
 
-                    return Convert.ToInt32(await command.ExecuteScalarAsync(cancellationToken)) > 0 ? HealthCheckResult.Healthy("ok") : HealthCheckResult.Unhealthy("Alerta");
+                    return Convert.ToInt32(await command.ExecuteScalarAsync(cancellationToken)) < 0 ? HealthCheckResult.Healthy("ok") : HealthCheckResult.Unhealthy("Alerta");
                     
                 }
             }

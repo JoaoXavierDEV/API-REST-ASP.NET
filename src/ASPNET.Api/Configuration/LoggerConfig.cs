@@ -12,7 +12,6 @@ namespace ASPNET.Api.Configuration
                 o.LogId = new Guid("ceeac5e5-7e62-4dcd-9bf4-810f7e3b2f3b");
                 o.Application = "Testessss";
             });
-            IEnumerable<string> tags = new string[] { "dsds", "wewewwe" };
 
             services.AddHealthChecksUI()
                  .AddSqlServerStorage(configuration.GetConnectionString("DefaultConnection"));
@@ -24,8 +23,8 @@ namespace ASPNET.Api.Configuration
                     options.HeartbeatId = "API Fornecedores";
                     options.Application = "APITESTES";
                 })
-                .AddCheck("Produtoss", new Extensions.SqlServerHealthCheck(configuration.GetConnectionString("DefaultConnection")), tags: tags)
-                .AddSqlServer(configuration.GetConnectionString("DefaultConnection"), name: "SQL SERVER", tags: tags);
+                .AddCheck("Produtos", new Extensions.SqlServerHealthCheck(configuration.GetConnectionString("DefaultConnection")), tags: new string[] { "produtos", "verificaQuantidade" })
+                .AddSqlServer(configuration.GetConnectionString("DefaultConnection"), name: "SQL SERVER", tags: new string[] {"sql", "banco de dados"});
 
             return services;
         }
